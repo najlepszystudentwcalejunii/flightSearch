@@ -14,6 +14,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.example.flightsearchapp.navigation.FlightSearchNavHost
 import com.example.flightsearchapp.ui.HomeScreen
 import com.example.flightsearchapp.ui.theme.FlightSearchAppTheme
 
@@ -35,7 +37,9 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }) { innerPadding ->
-                    HomeScreen(
+                    val navHostController = rememberNavController()
+                    FlightSearchNavHost(
+                        navController = navHostController,
                         modifier = Modifier.padding(innerPadding)
                     )
                 }

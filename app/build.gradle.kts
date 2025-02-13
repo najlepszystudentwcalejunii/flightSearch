@@ -42,6 +42,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.room)
+    implementation(libs.androidx.navigation.compose)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 

@@ -1,5 +1,6 @@
 package com.example.flightsearchapp.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,13 +11,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -26,11 +24,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.flightsearchapp.R
 import com.example.flightsearchapp.data.Airport
-import kotlin.math.sin
 
 @Composable
 fun HomeScreen(
     viewModel: HomeScreenViewModel = viewModel(factory = HomeScreenViewModel.Factory),
+    onAirportClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val uiState = viewModel.uiState.collectAsState()
@@ -50,26 +48,27 @@ fun HomeScreen(
             singleLine = true,
             modifier = Modifier.fillMaxWidth().padding(4.dp),
         )
-        AirportList(airports = uiState.value.airportList)
+        AirportList(airports = uiState.value.airportList,{ onAirportClick(it.id)})
     }
 }
 
 @Composable
 fun AirportList(
     airports: List<Airport>,
+    onAirportClick: (Airport) -> Unit
 ) {
     LazyColumn() {
         items(airports) {
-            Airport(airport = it)
+            AirportCard(airport = it, modifier = Modifier.clickable { onAirportClick(it) })
         }
     }
 }
 
 @Composable
-fun Airport(airport: Airport) {
+fun AirportCard(airport: Airport, modifier:Modifier = Modifier) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 10.dp),
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(4.dp)
     ) {
@@ -85,5 +84,5 @@ fun Airport(airport: Airport) {
 @Preview(showBackground = true)
 @Composable
 fun AirportCardPreview() {
-    Airport(Airport(1, "Test", "TST", 2354123))
+    AirportCard(Airport(1, "Test", "TST", 2354123))
 }

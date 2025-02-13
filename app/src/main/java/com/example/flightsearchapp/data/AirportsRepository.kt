@@ -4,8 +4,9 @@ import kotlinx.coroutines.flow.Flow
 
 interface AirportRepository {
     fun getAllAirports(): Flow<List<Airport>>
-    fun getAirportsByCode(code: String): Flow<List<Airport>>
     fun getAirportsByName(name: String): Flow<List<Airport>>
+    fun getAirportById(id: Int): Flow<Airport>
+    fun getArrivalAirports(id: Int): Flow<List<Airport>>
 }
 
 class DefaultAirportsRepository(private val airportDao: AirportDao): AirportRepository {
@@ -13,11 +14,15 @@ class DefaultAirportsRepository(private val airportDao: AirportDao): AirportRepo
         return airportDao.getAllAirports()
     }
 
-    override fun getAirportsByCode(code: String): Flow<List<Airport>> {
-        return airportDao.getAirportsByCode(code)
+    override fun getArrivalAirports(id: Int): Flow<List<Airport>> {
+        return airportDao.getAirportsNotOnRoute(id)
     }
 
     override fun getAirportsByName(name: String): Flow<List<Airport>> {
         return airportDao.getAirportsByName(name)
+    }
+
+    override fun getAirportById(id: Int): Flow<Airport> {
+        return airportDao.getAirportById(id)
     }
 }
